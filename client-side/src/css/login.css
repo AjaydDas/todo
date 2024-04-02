@@ -1,0 +1,52 @@
+/* .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .login-card {
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .login-heading {
+    margin-bottom: 20px;
+  }
+  
+  .login-form-button {
+    width: 100%;
+  }
+   */
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: normal;
+    align-items: normal;
+    align-content: normal;
+  }
+  
+  .flex-items:nth-child(1) {
+    display: block;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    align-self: auto;
+    order: 0;
+  }
+  
+  .flex-items:nth-child(2) {
+    display: block;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    align-self: auto;
+    order: 0;
+  }
+  body {
+    overflow: hidden;
+  }
+  
