@@ -7,6 +7,8 @@ import {  message, Upload } from 'antd';
 import axios from 'axios';
 
 const Addtask = () => {
+
+  const [form] = Form.useForm();
   const [error, setError] = useState(null);
 
   const onFinish = async (values) => {
@@ -17,14 +19,13 @@ const Addtask = () => {
       }
 
       const formData = new FormData();
-      console.log(values);
+        
       formData.append('priority', values.size);
       formData.append('newtask', values.name);
       formData.append('description', values.description);
       formData.append('deadline', values.deadline.format('YYYY-MM-DD'));
 
 
-console.log(formData)
       const response = await axios.post('http://localhost:5000/addtask', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -34,6 +35,8 @@ console.log(formData)
 
       if (response.status === 200) {
         console.log('Task added:', response.data);
+        form.resetFields();
+        message.success('Task added successfully')
       } else {
         console.error('Task failed:', response.statusText);
       }
@@ -48,6 +51,7 @@ console.log(formData)
       <div className="justify-content-center" style={{ width: '800px' }}>
         <Card>
           <Form
+            form={form}
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 14 }}
             layout="horizontal"
