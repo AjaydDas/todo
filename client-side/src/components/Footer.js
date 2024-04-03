@@ -98,17 +98,17 @@ const Footer = () => {
             <h6 className='text-uppercase fw-bold mb-4'>Contact</h6>
             <p>
               <MDBIcon icon="home" className="me-2" />
-              New York, NY 10012, US
+             Palakkad, Kerala, IND
             </p>
             <p>
               <MDBIcon icon="envelope" className="me-3" />
-              info@example.com
+              ajaydas@reontel.com
             </p>
             <p>
-              <MDBIcon icon="phone" className="me-3" /> + 01 234 567 88
+              <MDBIcon icon="phone" className="me-3" /> + 91 7594828589
             </p>
             <p>
-              <MDBIcon icon="print" className="me-3" /> + 01 234 567 89
+              <MDBIcon icon="print" className="me-3" /> + 91 7594828589
             </p>
           </MDBCol>
         </MDBRow>
@@ -118,7 +118,7 @@ const Footer = () => {
     <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
       © 2021 Copyright:
       <a className='text-reset fw-bold' href='https://mdbootstrap.com/'>
-        MDBootstrap.com
+        ajaydas.com
       </a>
     </div>
   </MDBFooter>

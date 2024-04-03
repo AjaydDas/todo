@@ -47,3 +47,14 @@ exports.login = async(req,res) =>{
         res.status(500).json({ error: "Login Failed" });
     }
  }
+
+ exports.logout = async(req,res) =>{
+
+    try {
+        const token = req.headers.authorization.replace('Bearer ', '');    
+        res.status(200).json({ message: 'Logout successful' });
+    } catch (error) {
+        console.error("Login Error:", error);
+        res.status(500).json({ error: "Login Failed" });
+    }
+ }

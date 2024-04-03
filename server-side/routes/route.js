@@ -25,5 +25,7 @@ router.post('/to-completetask', taskController.completeTask);
 
 router.post('/delete-task', taskController.deleteTask);
 
+router.get("/logout",authController.logout);
+
 
 module.exports = router;
