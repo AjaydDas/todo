@@ -42,40 +42,41 @@ const Home = () => {
     fetchData();
   }, []);
 
+
   const handleEdit = (task) => {
-
-    const formattedDeadline = dayjs(task.deadline).format('YYYY-MM-DD');
-
-    setEditTask({ ...task, deadline: formattedDeadline });
-    setEditModalVisible(true);
-    console.log(task.deadline)
     setEditTask(task);
     setEditModalVisible(true);
   };
 
-  const handleEditModalOk = async () => {
+
+
+  const handleEditModalOk = async (values) => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('Token not found');
       }
 
-      const response = await axios.post(`http://localhost:5000/edit-task`, {
-        task_id: editTask._id,
-        priority: editTask.priority,
-        name: editTask.name,
-        description: editTask.description,
-        deadline: editTask.deadline,
-        documents: editTask.documents,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.post(
+        `http://localhost:5000/edit-task`,
+        {
+          task_id: editTask._id,
+          priority: values.priority,
+          name: values.name,
+          description: values.description,
+          deadline: values.deadline.format('YYYY-MM-DD'),
+          documents: values.documents,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
 
       const updatedTasks = data.tasks.map((task) => {
         if (task._id === editTask._id) {
-          return response.data; 
+          return response.data;
         }
         return task;
       });
@@ -87,6 +88,8 @@ const Home = () => {
       console.error('Error editing task:', error);
     }
   };
+
+
 
   const handleEditModalCancel = () => {
     setEditModalVisible(false);
@@ -131,35 +134,35 @@ const Home = () => {
       {data && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', margin: '50px' }}>
           {data.tasks.map((item) => (
-            <Card className="card" key={item._id} style={{ width: 300 , backgroundColor: item.priority === 'high' ? '#E67E7F' : item.priority === 'medium' ? '#F3D780' : item.priority === 'low' ? '#99B880' : 'inherit' }}>
-          
+            <Card className="card" key={item._id} style={{ width: 300, backgroundColor: item.priority === 'high' ? '#E67E7F' : item.priority === 'medium' ? '#F3D780' : item.priority === 'low' ? '#99B880' : 'inherit' }}>
+
               <div className="row flex-container">
-              <div className="col-md-3" >
-                 {item.priority}
-               </div>
-              <div className="col-md-5 justify-content">
+                <div className="col-md-3" >
+                  {item.priority}
+                </div>
+                <div className="col-md-5 justify-content">
                   {new Date(item.deadline).toLocaleDateString('en-GB')}
                 </div>
                 <div className="col-md-4">
                   <div className='row justify-content-center'>
-                      <div className="col-md-6">
-                        <EditOutlined
-                          className="site-form-item-icon"
-                          onClick={() => handleEdit(item)}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                          <DeleteOutlined
-                            className="site-form-item-icon"
-                            onClick={() => showDeleteModal(item._id)}
-                          />
-                      </div>
+                    <div className="col-md-6">
+                      <EditOutlined
+                        className="site-form-item-icon"
+                        onClick={() => handleEdit(item)}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <DeleteOutlined
+                        className="site-form-item-icon"
+                        onClick={() => showDeleteModal(item._id)}
+                      />
+                    </div>
                   </div>
 
-                  </div>
+                </div>
 
               </div>
-             
+
               <h1>{item.name}</h1>
               <h3>Priority: {item.priority}</h3>
               <p>Description: {item.description}</p>
@@ -178,22 +181,42 @@ const Home = () => {
         onCancel={handleEditModalCancel}
       >
         {editTask && (
-          <Form initialValues={editTask}>
-            <Form.Item label="Priority" name="priority" rules={[{ required: true, message: 'Please select a priority' }]}>
+          <Form
+            initialValues={{
+              priority: editTask.priority,
+              name: editTask.name,
+              description: editTask.description,
+              deadline: editTask.deadline ? moment(editTask.deadline) : moment(),
+              documents: editTask.documents,
+            }}
+          >
+            <Form.Item
+              label="Priority"
+              name="priority"
+              rules={[{ required: true, message: 'Please select a priority' }]}
+            >
               <Radio.Group>
                 <Radio.Button value="low">Low</Radio.Button>
                 <Radio.Button value="medium">Medium</Radio.Button>
                 <Radio.Button value="high">High</Radio.Button>
               </Radio.Group>
             </Form.Item>
-            <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please enter a name' }]}>
+            <Form.Item
+              label="Name"
+              name="name"
+              rules={[{ required: true, message: 'Please enter a name' }]}
+            >
               <Input />
             </Form.Item>
             <Form.Item label="Description" name="description">
               <TextArea />
             </Form.Item>
-            <Form.Item label="Deadline" name="deadline" rules={[{ required: true, message: 'Please enter deadline' }]}>
-              <DatePicker/>
+            <Form.Item
+              label="Deadline"
+              name="deadline"
+              rules={[{ required: true, message: 'Please enter deadline' }]}
+            >
+              <DatePicker />
             </Form.Item>
             <Form.Item label="Documents" name="documents">
               <Input />
@@ -203,10 +226,11 @@ const Home = () => {
                 Update
               </Button>
             </Form.Item>
-          
           </Form>
+
         )}
       </Modal>
+
 
       <Modal
         title="Confirm Delete"
@@ -216,7 +240,7 @@ const Home = () => {
       >
         <p>Are you sure you want to delete this task?</p>
       </Modal>
-      <Footer/>
+      <Footer />
     </div>
 
   );
